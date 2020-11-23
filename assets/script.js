@@ -7,6 +7,7 @@ var currentQuestionIndex
 var correctOrNot = document.getElementById("correctOrNot")
 var finishButton = document.getElementById("finishBtn")
 var highScores = document.getElementById("highScores")
+var timer = document.getElementById("timer")
 
 var questions = [
     {
@@ -51,6 +52,10 @@ var questions = [
         ]
     }
 ]
+
+var timer = function() {
+
+}
 
 var startGame = function() {
     startButton.classList.add("hide");
