@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="./assets/style.css" rel="stylesheet">
     <title>Coding Quiz</title>
-    <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
     <header>
-        <div class="high-scores">View High Scores</div>
-        <div class="timer">Time: </div>
+        <button class= "highScores id="highScores">View High Scores</button>
+        <div id="timer">Time: </div>
     </header>
-    <body>
-        <section class="content">
-            <div id="content-area">
-                <!--<h2 class="question">This is a question?</h3>
-                <ul class="answers">
-                    <li>a) this is an answer</li>
-                    <li>b) this is also an answer</li>
-                    <li>c) so is this</li>
-                    <li>d) and this</li>
-                </ul>
-                <h3>correct/incorect</h2>-->
+    <main class="container">
+        <div id="questionContainer">
+            <div class="question" id="question">Click the start button to test your knowledge on JavaScript basics!</div>
+            <div id="answerButtons" class="btnGrid hide">
+                <!--buttons get appended in here-->
             </div>
-        </section>
-    </body>
+        </div>
+        <div class="controls">
+            <button id="startBtn" class="startBtn btn">Start</button>
+            <button id="nextBtn" class="nextBtn btn hide">Next</button>
+            <button id="finishBtn" class="finishBtn btn hide">Finish</button>
+        </div>
+    </main>
+    <footer id="correctOrNot" class="hide">
+        Correct/Incorrect
+    </footer>
     <script src="./assets/script.js"></script>
 </body>
 </html>

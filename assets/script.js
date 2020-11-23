@@ -1,39 +1,130 @@
-var highScores = "";
-var timer = 90;
-var startButton = document.querySelector("#startButton");
-var questions = ["An argument for a function goes where?", "JavaScript is not a low level language.", "The condition for and if/else statement goes between what symbols?", "What type of language is JavaScript?", "JavaScript cannot run outside of the browser."  
-];
-var answers = [
-    ["a) before the parentheses", "b) inside the parentheses", "c) after the parentheses", "inside the curly braces"],
-    ["a) true", "b) false"],
-    ["a) parentheses", "b) quotation marks", "c) square braces", "d) curly braces"],
-    ["a) programming language", "b) script language", "c) ECMA language", "d) all of the above"],
-    ["a) true", "b) false"]
-];
+var startButton = document.getElementById("startBtn")
+var nextButton = document.getElementById("nextBtn")
+var questionElement = document.getElementById("question")
+var answerButtons = document.getElementById("answerButtons")
+var shuffledQuestions 
+var currentQuestionIndex
+var correctOrNot = document.getElementById("correctOrNot")
+var finishButton = document.getElementById("finishBtn")
+var highScores = document.getElementById("highScores")
 
-var content = document.querySelector("#content-area");
-var answers = document.querySelector("#answers");
+var questions = [
+    {
+        question: "An argument for a function goes where?",
+        answers: [
+            {text: "a) before the parentheses", correct: false},
+            {text: "b) inside the parentheses", correct: true},
+            {text: "c) after the parentheses", correct: false},
+            {text: "d) inside the curly braces", correct: false}
+        ]
+    },
+    {
+        question: "JavaScript is not a low level language.",
+        answers: [
+            {text: "a) true", correct: true},
+            {text: "b) false", correct: false}
+        ]
+    },
+    {
+        question: "The condition for and if/else statement goes between what symbols?",
+        answers: [
+            {text: "a) parentheses", correct: true},
+            {text: "b) quotation marks", correct: false},
+            {text: "c) square braces", correct: false},
+            {text: "d) curly braces", correct: false}
+        ]
+    },
+    {
+        question: "What type of language is JavaScript?",
+        answers: [
+            {text: "a) programming language", correct: false},
+            {text: "b) script language", correct: false},
+            {text: "c) ECMA language", correct: false},
+            {text: "d) all of the above", correct: true}
+        ]
+    },
+    {
+        question: "JavaScript cannot run outside of the browser.",
+        answers: [
+            {text: "a) true", correct: false},
+            {text: "b) false", correct: true}
+        ]
+    }
+]
 
-var startQuiz = function() {
-    var info = document.createElement("h2");
-    info.textContent = "Coding Quiz";
-    var realInfo = document.createElement("p");
-    realInfo.textContent = "Try to get through the next five questions a quickly as possible to get the high score!";
-    var start = document.createElement("button");
-    start.className = "startButton";
-    start.textContent = "Start Quiz";
-    content.appendChild(info);
-    content.appendChild(realInfo);
-    content.appendChild(start);
-};
+var startGame = function() {
+    startButton.classList.add("hide");
+    answerButtons.classList.remove("hide")
+    questionElement.textContent = "";
+    shuffledQuestions = questions.sort(() => Math.random() - .5)
+    currentQuestionIndex = 0
+    setNextQuestion();
+}
 
-var startButtonHandler = function(event) {
-    var targetElement = event.target;
-    if (targetElement.matches(".startButton")) {
-        console.log("it worked!");
+var setNextQuestion = function() {
+    resetState()
+    showQuestion(shuffledQuestions[currentQuestionIndex])
+}
+
+var showQuestion = function(question) {
+    questionElement.textContent = question.question;
+    question.answers.forEach(answer => {
+        var button = document.createElement("button")
+        button.textContent = answer.text
+        button.classList.add("btn")
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+        }
+        button.addEventListener("click", selectAnswer)
+        answerButtons.appendChild(button)
+    })
+}
+
+var resetState = function() {
+    nextButton.classList.add("hide")
+    while (answerButtons.firstChild) {
+        answerButtons.removeChild(answerButtons.firstChild)
     }
 }
 
-startQuiz();
+var selectAnswer = function(event) {
+    var selectedButton = event.target
+    var correct = selectedButton.dataset.correct
+    if (correct === "true") {
+        correctOrNot.classList.remove("hide")
+        correctOrNot.textContent = "correct!"
+        correctOrNot.classList.add("correct")
+    }
+    else {
+        correctOrNot.classList.remove("hide")
+        correctOrNot.textContent = "incorrect!"
+        correctOrNot.classList.add("incorrect")
+    }
+    console.log(shuffledQuestions.length)
+    console.log(currentQuestionIndex)
+    if (shuffledQuestions.length > currentQuestionIndex + 1) {
+        nextButton.classList.remove("hide") 
+        nextButton.addEventListener("click", clearStatus)
+    }
+    else {
+        finishButton.classList.remove("hide")
+        finishButton.addEventListener("click", highScores)
+    }
+}
 
-content.addEventListener("click", startButtonHandler);
+var highScores = function() {
+    window.prompt("You have finished the quiz! Enter your initials to save your score.")
+}
+
+
+var clearStatus = function() {
+    correctOrNot.classList.add("hide")
+    correctOrNot.classList.remove("correct")
+    correctOrNot.classList.remove("incorrect")
+    currentQuestionIndex++
+    setNextQuestion()
+}
+
+startButton.addEventListener("click", startGame);
+nextButton.addEventListener("click", clearStatus);
+highScores.addEventListener("click" )
