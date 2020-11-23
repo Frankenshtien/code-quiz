@@ -7,7 +7,8 @@ var currentQuestionIndex
 var correctOrNot = document.getElementById("correctOrNot")
 var finishButton = document.getElementById("finishBtn")
 var highScores = document.getElementById("highScores")
-var timer = document.getElementById("timer")
+var time = document.getElementById("timer")
+var countDown = 90
 
 var questions = [
     {
@@ -54,7 +55,11 @@ var questions = [
 ]
 
 var timer = function() {
-
+    setInterval(function() {
+    time.textContent = "time:" + countDown
+    countDown--
+    }, 1000);
+    setNextQuestion()
 }
 
 var startGame = function() {
@@ -63,7 +68,8 @@ var startGame = function() {
     questionElement.textContent = "";
     shuffledQuestions = questions.sort(() => Math.random() - .5)
     currentQuestionIndex = 0
-    setNextQuestion();
+    timer()
+
 }
 
 var setNextQuestion = function() {
@@ -105,8 +111,6 @@ var selectAnswer = function(event) {
         correctOrNot.textContent = "incorrect!"
         correctOrNot.classList.add("incorrect")
     }
-    console.log(shuffledQuestions.length)
-    console.log(currentQuestionIndex)
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
         nextButton.classList.remove("hide") 
         nextButton.addEventListener("click", clearStatus)
@@ -118,7 +122,10 @@ var selectAnswer = function(event) {
 }
 
 var highScores = function() {
-    window.prompt("You have finished the quiz! Enter your initials to save your score.")
+    clearInterval(timer)
+    var initials = window.prompt("You have finished the quiz! Enter your initials to save your score.")
+    localStorage.setItem("initials", initials)
+    localStorage.setItem("score", countDown)
 }
 
 
@@ -130,6 +137,8 @@ var clearStatus = function() {
     setNextQuestion()
 }
 
+
 startButton.addEventListener("click", startGame);
 nextButton.addEventListener("click", clearStatus);
-highScores.addEventListener("click" )
+highScores.addEventListener("click", );
+countDown.addEventListener()
